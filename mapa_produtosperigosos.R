@@ -48,7 +48,7 @@ myshp@data <- plyr::join(myshp@data,
 
 
 # Colocando a TU
-DR_TU <- read.table("Dados/perigoso_2019.csv",
+DR_TU <- read.table("TU_completa.csv",
                     sep=';', dec=',', header=TRUE)
 DR_TU$AB <- NA
 DR_TU$AB <- paste(DR_TU$A, DR_TU$B, sep=" - ")
@@ -65,11 +65,11 @@ myshp@data <- plyr::join(myshp@data,
 
 red = colorRampPalette(c('green', 'yellow', 'red'))
 
-myshp@data$TU2019 <- ifelse(myshp@data$TU2019 == 0, NA, myshp@data$TU2019)
-myshp@data$TU2018 <- ifelse(myshp@data$TU2018 == 0, NA, myshp@data$TU2018)
-myshp@data$TU2017 <- ifelse(myshp@data$TU2017 == 0, NA, myshp@data$TU2017)
-myshp@data$TU2016 <- ifelse(myshp@data$TU2016 == 0, NA, myshp@data$TU2016)
-myshp@data$TU2015 <- ifelse(myshp@data$TU2015 == 0, NA, myshp@data$TU2015)
+myshp@data$TU_2019 <- ifelse(myshp@data$TU_2019 == 0, NA, myshp@data$TU_2019)
+myshp@data$TU_2018 <- ifelse(myshp@data$TU_2018 == 0, NA, myshp@data$TU_2018)
+myshp@data$TU_2017 <- ifelse(myshp@data$TU_2017 == 0, NA, myshp@data$TU_2017)
+myshp@data$TU_2016 <- ifelse(myshp@data$TU_2016 == 0, NA, myshp@data$TU_2016)
+myshp@data$TU_2015 <- ifelse(myshp@data$TU_2015 == 0, NA, myshp@data$TU_2015)
 
 # Drop das colunas desnecessarias
 myshp@data <- myshp@data[ , !names(myshp@data) %in% c("CodigoLinh", "CodigoLi00",
@@ -98,23 +98,23 @@ colnames(myshp@data)[which(names(myshp@data) == "NomeLinha")] <- "Linha"
 
 img <- "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Logo_ANTT.svg/1200px-Logo_ANTT.svg.png"
 
-m3 <- mapview(myshp, zcol = "TU2019",
+m3 <- mapview(myshp, zcol = "TU_2019",
               legend = FALSE,
               layer.name = "2019",
               color = red) +
-  mapview(myshp, zcol = "TU2018",
+  mapview(myshp, zcol = "TU_2018",
           legend = FALSE,
           layer.name = "2018",
           color = red) +
-  mapview(myshp, zcol = "TU2017",
+  mapview(myshp, zcol = "TU_2017",
           legend = FALSE,
           layer.name = "2017",
           color = red) +
-  mapview(myshp, zcol = "TU2016",
+  mapview(myshp, zcol = "TU_2016",
           legend = FALSE,
           layer.name = "2016",
           color = red)+
-  mapview(myshp, zcol = "TU2015",
+  mapview(myshp, zcol = "TU_2015",
           legend = FALSE,
           layer.name = "2015",
           color = red)
@@ -123,7 +123,13 @@ m3 <- m3@map %>% addLayersControl(baseGroups = c("2019", "2018", "2017", "2016",
                                   position = "topleft",
                                   options = layersControlOptions(collapsed = FALSE))
   
-m3 <- m3 %>% leafem::addLogo(img, width = 120, height = 60, url = "http://www.antt.gov.br/", position="topleft")
+  m3 <- m3 %>% leafem::addLogo(img, width = 120, height = 60, url = "http://www.antt.gov.br/", position="topleft")
+
+sum(DR_TU$Dist_2015)
+sum(DR_TU$Dist_2016)
+sum(DR_TU$Dist_2017)
+sum(DR_TU$Dist_2018)
+sum(DR_TU$Dist_2019)
 
 mapshot(m3, url = "mapa_SFF.html", selfcontained = FALSE)
 
